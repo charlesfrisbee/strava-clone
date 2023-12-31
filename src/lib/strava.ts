@@ -54,6 +54,7 @@ export const getAthlete = async () => {
   }
   const stravaResponse = await fetch("https://www.strava.com/api/v3/athlete", {
     headers: { Authorization: `Bearer ${accessToken}` },
+    next: { tags: ["strava"] },
   });
 
   if (!stravaResponse.ok) {
