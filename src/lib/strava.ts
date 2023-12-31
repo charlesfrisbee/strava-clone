@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { Activity, Athlete, StravaAuthResponse } from "./types";
 import { cookies } from "next/headers";
+import { buildGPXFile } from "./gpx";
 
 export const getNewAccessToken = async (code?: string) => {
   if (!code) {
@@ -89,4 +90,38 @@ export const getActivities = async () => {
   const stravaResponseData = await stravaResponse.json();
 
   return stravaResponseData as Activity[];
+};
+
+export const uploadActivity = async () => {
+  const accessToken = await getAccessTokenFromCookie();
+
+  if (!accessToken) {
+    return;
+  }
+
+  const gpxString = buildGPXFile("fd");
+  const formData = new FormData();
+  formData.append(
+    "file",
+    new Blob([gpxString], { type: "application/gpx+xml" }),
+    "activity.gpx"
+  );
+  formData.append("data_type", "gpx");
+  const stravaResponse = await fetch("https://www.strava.com/api/v3/uploads", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${accessToken}` },
+    body: formData,
+    // next: { tags: ["strava"] },
+  });
+
+  if (!stravaResponse.ok) {
+    console.log(stravaResponse.status);
+    const stravaResponseData = await stravaResponse.json();
+    console.log(stravaResponseData);
+    return;
+  }
+
+  const stravaResponseData = await stravaResponse.json();
+
+  return stravaResponseData as any;
 };
