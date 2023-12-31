@@ -2,8 +2,8 @@
 
 import { getAccessTokenFromCookie, uploadActivity } from "@/lib/strava";
 
-// export const dynamic = "force-dynamic"; // defaults to auto
-// export const runtime = "edge";
+export const dynamic = "force-dynamic"; // defaults to auto
+export const runtime = "edge";
 
 export async function GET(request: Request, response: Response) {
   try {
