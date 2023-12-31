@@ -1,6 +1,8 @@
-import { StravaAuthResponse } from "./types";
+import { NextRequest } from "next/server";
+import { Athlete, StravaAuthResponse } from "./types";
+import { cookies } from "next/headers";
 
-export const getAccessToken = async (code?: string) => {
+export const getNewAccessToken = async (code?: string) => {
   if (!code) {
     throw new Error("No code found");
   }
@@ -33,4 +35,31 @@ export const getAccessToken = async (code?: string) => {
   const responseData = await tokenResponse.json();
   console.log(responseData);
   return responseData as StravaAuthResponse;
+};
+
+export const getAccessTokenFromCookie = async () => {
+  //   const cookieHeader = request.headers.get("cookie");
+  const requestCookies = cookies().get("auth");
+  if (!requestCookies) {
+    return;
+  }
+  return requestCookies.value;
+};
+
+export const getAthlete = async () => {
+  const accessToken = await getAccessTokenFromCookie();
+
+  if (!accessToken) {
+    return;
+  }
+  const stravaResponse = await fetch("https://www.strava.com/api/v3/athlete", {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+
+  if (!stravaResponse.ok) {
+    return;
+  }
+
+  const stravaResponseData = await stravaResponse.json();
+  return stravaResponseData as Athlete;
 };

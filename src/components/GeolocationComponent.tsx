@@ -5,6 +5,7 @@ type Position = {
   latitude: number | null;
   longitude: number | null;
   altitude: number | null;
+  speed?: number | null;
 };
 
 const GeolocationComponent = () => {
@@ -12,6 +13,7 @@ const GeolocationComponent = () => {
     latitude: null,
     longitude: null,
     altitude: null,
+    speed: null,
   });
 
   useEffect(() => {
@@ -34,6 +36,7 @@ const GeolocationComponent = () => {
             latitude: pos.coords.latitude,
             longitude: pos.coords.longitude,
             altitude: pos.coords.altitude,
+            speed: pos.coords.speed,
           });
         },
         (err) => console.log(err),

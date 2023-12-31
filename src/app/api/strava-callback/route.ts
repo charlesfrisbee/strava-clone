@@ -1,4 +1,5 @@
-import { getAccessToken } from "@/lib/strava";
+import { getNewAccessToken } from "@/lib/strava";
+import { cookies } from "next/headers";
 import { type NextRequest } from "next/server";
 
 export const dynamic = "force-dynamic"; // defaults to auto
@@ -11,9 +12,19 @@ export async function GET(request: NextRequest) {
     return new Response("No code found", { status: 400 });
   }
 
-  const token = await getAccessToken(code);
+  const token = await getNewAccessToken(code);
+
+  cookies().set({
+    name: "auth",
+    value: token.access_token,
+    httpOnly: true,
+    // path: "/",
+  });
 
   console.log("strava callback called");
 
-  return new Response("Hello world");
+  return new Response(null, {
+    status: 302,
+    headers: { Location: "/" },
+  });
 }
