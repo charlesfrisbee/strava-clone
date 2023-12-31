@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { Athlete, StravaAuthResponse } from "./types";
+import { Activity, Athlete, StravaAuthResponse } from "./types";
 import { cookies } from "next/headers";
 
 export const getNewAccessToken = async (code?: string) => {
@@ -63,4 +63,30 @@ export const getAthlete = async () => {
 
   const stravaResponseData = await stravaResponse.json();
   return stravaResponseData as Athlete;
+};
+
+export const getActivities = async () => {
+  const accessToken = await getAccessTokenFromCookie();
+
+  if (!accessToken) {
+    return;
+  }
+  const stravaResponse = await fetch(
+    "https://www.strava.com/api/v3/athlete/activities/?per_page=5",
+    {
+      method: "POST",
+      headers: { Authorization: `Bearer ${accessToken}` },
+      // next: { tags: ["strava"] },
+    }
+  );
+
+  if (!stravaResponse.ok) {
+    const stravaResponseData = await stravaResponse.json();
+    console.log(stravaResponseData);
+    return;
+  }
+
+  const stravaResponseData = await stravaResponse.json();
+
+  return stravaResponseData as Activity[];
 };
