@@ -1,5 +1,10 @@
 import { NextRequest } from "next/server";
-import { Activity, Athlete, StravaAuthResponse } from "./types";
+import {
+  Activity,
+  Athlete,
+  GeolocationDataPoint,
+  StravaAuthResponse,
+} from "./types";
 import { cookies } from "next/headers";
 import { buildGPXFile } from "./gpx";
 
@@ -92,25 +97,16 @@ export const getActivities = async () => {
   return stravaResponseData as Activity[];
 };
 
-export const uploadActivity = async () => {
+export const uploadActivity = async (
+  geolocationData: GeolocationDataPoint[]
+) => {
   const accessToken = await getAccessTokenFromCookie();
 
   if (!accessToken) {
     return;
   }
 
-  const gpxString = buildGPXFile([
-    {
-      latitude: -33.8568,
-      longitude: 151.2153,
-      timestamp: 0,
-    },
-    {
-      latitude: -33.8668,
-      longitude: 151.2153,
-      timestamp: 0,
-    },
-  ]);
+  const gpxString = buildGPXFile(geolocationData);
   const formData = new FormData();
   formData.append(
     "file",
@@ -133,6 +129,7 @@ export const uploadActivity = async () => {
   }
 
   const stravaResponseData = await stravaResponse.json();
+  console.log(stravaResponseData);
 
   return stravaResponseData as any;
 };

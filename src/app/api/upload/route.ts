@@ -5,9 +5,11 @@ import { uploadActivity } from "@/lib/strava";
 export const dynamic = "force-dynamic"; // defaults to auto
 // export const runtime = "edge";
 
-export async function GET(request: Request, response: Response) {
+export async function POST(request: Request, response: Response) {
   try {
-    const hehe = await uploadActivity();
+    const geolocationData = await request.json();
+    console.log(geolocationData);
+    const hehe = await uploadActivity(geolocationData);
     return new Response(JSON.stringify({ res: "success" }), {
       status: 200,
       headers: {
