@@ -1,6 +1,6 @@
 // give the code for a next 13 route handler
 
-import { getAccessTokenFromCookie, uploadActivity } from "@/lib/strava";
+import { uploadActivity } from "@/lib/strava";
 
 export const dynamic = "force-dynamic"; // defaults to auto
 // export const runtime = "edge";

@@ -99,7 +99,18 @@ export const uploadActivity = async () => {
     return;
   }
 
-  const gpxString = buildGPXFile("fd");
+  const gpxString = buildGPXFile([
+    {
+      latitude: -33.8568,
+      longitude: 151.2153,
+      timestamp: 0,
+    },
+    {
+      latitude: -33.8668,
+      longitude: 151.2153,
+      timestamp: 0,
+    },
+  ]);
   const formData = new FormData();
   formData.append(
     "file",

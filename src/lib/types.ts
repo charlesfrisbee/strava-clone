@@ -91,3 +91,9 @@ export type Activity = {
 };
 
 export type Activities = Activity[];
+
+export type GeolocationDataPoint = {
+  latitude: number;
+  longitude: number;
+  timestamp: number; // or Date
+};

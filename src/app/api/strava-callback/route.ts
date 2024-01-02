@@ -1,5 +1,6 @@
 import { getNewAccessToken } from "@/lib/strava";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { type NextRequest } from "next/server";
 
 export const dynamic = "force-dynamic"; // defaults to auto
@@ -22,6 +23,8 @@ export async function GET(request: NextRequest) {
   });
 
   console.log("strava callback called");
+
+  //   redirect("/");
 
   return new Response(null, {
     status: 302,
