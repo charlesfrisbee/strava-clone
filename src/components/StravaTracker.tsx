@@ -66,8 +66,18 @@ const StravaTracker = (props: Props) => {
 
   return (
     <div>
-      <button onClick={startTracking}>Start Tracking</button>
-      <button onClick={stopTracking}>Stop and Upload</button>
+      <button
+        onClick={startTracking}
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
+        Start Tracking
+      </button>
+      <button
+        onClick={stopTracking}
+        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-4"
+      >
+        Stop and Upload
+      </button>
     </div>
   );
 };
