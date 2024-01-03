@@ -6,10 +6,15 @@ type Props = {};
 
 const StravaTracker = (props: Props) => {
   const [locationData, setLocationData] = useState<GeolocationDataPoint[]>([]);
+  const [trackingStatus, setTrackingStatus] = useState("Not Started");
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   let watchId: number;
 
   const startTracking = () => {
     if ("geolocation" in navigator) {
+      setTrackingStatus("Tracking Started");
+      setErrorMessage("");
       watchId = navigator.geolocation.watchPosition(
         (position) => {
           setLocationData((oldData) => [
@@ -23,6 +28,7 @@ const StravaTracker = (props: Props) => {
         },
         (error) => {
           console.error("Error getting geolocation: ", error);
+          setErrorMessage("Geolocation is not supported by this browser.");
         },
         {
           enableHighAccuracy: true,
@@ -32,18 +38,19 @@ const StravaTracker = (props: Props) => {
       );
     } else {
       console.error("Geolocation is not supported by this browser.");
+      setErrorMessage("Geolocation is not supported by this browser.");
     }
   };
 
   const stopTracking = async () => {
     navigator.geolocation.clearWatch(watchId);
-
-    // Ensure there is data to send
     if (locationData.length === 0) {
       console.error("No location data to upload");
+      setErrorMessage("No location data to upload");
       return;
     }
 
+    setIsLoading(true);
     try {
       const response = await fetch("/api/upload", {
         method: "POST",
@@ -59,11 +66,14 @@ const StravaTracker = (props: Props) => {
 
       const result = await response.json();
       console.log("Upload successful:", result);
+      setTrackingStatus("Tracking Stopped and Data Uploaded");
     } catch (error) {
       console.error("Error uploading activity:", error);
+      setErrorMessage("Error uploading activity: " + (error as Error).message);
+    } finally {
+      setIsLoading(false);
     }
   };
-
   return (
     <div>
       <button
@@ -78,6 +88,9 @@ const StravaTracker = (props: Props) => {
       >
         Stop and Upload
       </button>
+      {isLoading && <div className="text-center my-2">Uploading...</div>}
+      {errorMessage && <div className="text-red-500">{errorMessage}</div>}
+      <div className="text-green-500">{trackingStatus}</div>
     </div>
   );
 };
