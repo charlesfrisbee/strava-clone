@@ -1,9 +1,7 @@
-import GeolocationComponent from "@/components/GeolocationComponent";
+import ActivityList from "@/components/ActivityList";
 import Navbar from "@/components/NavBar";
 import StravaTracker from "@/components/StravaTracker";
 import { getActivities, getAthlete } from "@/lib/strava";
-import { calculatePace } from "@/lib/utils";
-import Link from "next/link";
 
 export default async function Home() {
   const data = await getAthlete();
@@ -13,28 +11,11 @@ export default async function Home() {
     <main>
       <Navbar data={data} />
       {activities && (
-        <div className="container mx-auto">
-          <h1 className="text-4xl font-bold">Activities</h1>
-
-          <ul className="flex flex-col gap-4">
-            {activities.map((activity) => (
-              <li key={activity.id}>
-                <Link href={`/activity/${activity.id}`}>
-                  <span className="text-xl hover:text-blue-500">
-                    {activity.name}
-                  </span>
-                  <p>{`${Math.round(activity.distance / 1000)} km`}</p>
-                  <p>{`${Math.round(activity.elapsed_time / 60)} min`}</p>
-                  <p>{calculatePace(activity.average_speed)}</p>
-                </Link>
-              </li>
-            ))}
-          </ul>
+        <>
+          <ActivityList activities={activities} />
           <StravaTracker />
-        </div>
+        </>
       )}
-
-      {/* <GeolocationComponent /> */}
     </main>
   );
 }
