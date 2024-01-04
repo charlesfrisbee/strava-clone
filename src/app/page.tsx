@@ -12,7 +12,7 @@ export default async function Home() {
   return (
     <main>
       <Navbar data={data} />
-      {activities ? (
+      {activities && (
         <div className="container mx-auto">
           <h1 className="text-4xl font-bold">Activities</h1>
 
@@ -30,15 +30,11 @@ export default async function Home() {
               </li>
             ))}
           </ul>
-        </div>
-      ) : (
-        <div className="container mx-auto">
-          <h1 className="text-4xl font-bold">No activities found</h1>
+          <StravaTracker />
         </div>
       )}
 
       {/* <GeolocationComponent /> */}
-      <StravaTracker />
     </main>
   );
 }
