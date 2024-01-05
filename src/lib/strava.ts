@@ -135,5 +135,5 @@ export const uploadActivity = async (
 };
 
 export const buildStravaAuthUrl = (clientId: string, redirectURI: string) => {
-  return `http://www.strava.com/oauth/authorize?client_id=${clientID}&response_type=code&redirect_uri=${redirectURI}&approval_prompt=force&scope=activity:write`;
+  return `http://www.strava.com/oauth/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectURI}&approval_prompt=force&scope=activity:write`;
 };

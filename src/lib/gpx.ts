@@ -6,14 +6,11 @@ export const buildGPXFile = (activities: GeolocationDataPoint[]) => {
     (activity) =>
       new Point(activity.latitude, activity.longitude, {
         ele: 100, // You might need to adjust this if you have elevation data
-        // time: new Date(activity.timestamp),
         time: new Date(activity.timestamp),
       })
   );
   const gpxData = new GarminBuilder();
   gpxData.setSegmentPoints(points);
-
-  console.log(buildGPX(gpxData.toObject()));
 
   return buildGPX(gpxData.toObject());
 };
