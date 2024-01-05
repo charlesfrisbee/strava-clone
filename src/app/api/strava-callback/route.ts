@@ -24,8 +24,6 @@ export async function GET(request: NextRequest) {
 
   console.log("strava callback called");
 
-  //   redirect("/");
-
   return new Response(null, {
     status: 302,
     headers: { Location: "/" },
