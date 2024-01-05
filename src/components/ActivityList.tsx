@@ -8,6 +8,15 @@ type ActivityListProps = {
 };
 
 const ActivityList = ({ activities }: ActivityListProps) => {
+  if (activities.length === 0) {
+    return (
+      <div className="container mx-auto text-center">
+        <h1 className="text-4xl font-bold">Activities</h1>
+        <p className="text-xl mt-4">No activities found.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto">
       <h1 className="text-4xl font-bold">Activities</h1>
