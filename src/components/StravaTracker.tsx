@@ -4,9 +4,15 @@ import React, { useState } from "react";
 
 type Props = {};
 
+type TrackingStatus =
+  | "Not Started"
+  | "Tracking Started"
+  | "Tracking Stopped and Data Uploaded";
+
 const StravaTracker = (props: Props) => {
   const [locationData, setLocationData] = useState<GeolocationDataPoint[]>([]);
-  const [trackingStatus, setTrackingStatus] = useState("Not Started");
+  const [trackingStatus, setTrackingStatus] =
+    useState<TrackingStatus>("Not Started");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   let watchId: number;
@@ -76,19 +82,23 @@ const StravaTracker = (props: Props) => {
   };
   return (
     <div>
-      <button
-        onClick={startTracking}
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-      >
-        Start Tracking
-      </button>
-      <button
-        onClick={stopTracking}
-        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-4"
-      >
-        Stop and Upload
-      </button>
-      {isLoading && <div className="text-center my-2">Uploading...</div>}
+      {trackingStatus !== "Tracking Started" && (
+        <button
+          onClick={startTracking}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Start Tracking
+        </button>
+      )}
+      {trackingStatus === "Tracking Started" && (
+        <button
+          onClick={stopTracking}
+          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-4"
+        >
+          Stop and Upload
+        </button>
+      )}
+      {isLoading && <div className="text-green-500">Uploading...</div>}
       {errorMessage && <div className="text-red-500">{errorMessage}</div>}
       <div className="text-green-500">{trackingStatus}</div>
     </div>
