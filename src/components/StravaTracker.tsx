@@ -81,7 +81,7 @@ const StravaTracker = (props: Props) => {
     }
   };
   return (
-    <div>
+    <div className="py-4">
       {trackingStatus !== "Tracking Started" && (
         <button
           onClick={startTracking}

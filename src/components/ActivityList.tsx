@@ -10,7 +10,7 @@ type ActivityListProps = {
 const ActivityList = ({ activities }: ActivityListProps) => {
   if (activities.length === 0) {
     return (
-      <div className="container mx-auto text-center">
+      <div className="container text-center">
         <h1 className="text-4xl font-bold">Activities</h1>
         <p className="text-xl mt-4">No activities found.</p>
       </div>
@@ -18,12 +18,12 @@ const ActivityList = ({ activities }: ActivityListProps) => {
   }
 
   return (
-    <div className="container mx-auto">
+    <div className="mx-auto">
       <h1 className="text-4xl font-bold">Activities</h1>
 
-      <ul className="flex flex-col gap-4">
+      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {activities.map((activity) => (
-          <li key={activity.id}>
+          <li key={activity.id} className="border p-4">
             <Link href={`/activity/${activity.id}`}>
               <span className="text-xl hover:text-blue-500">
                 {activity.name}

@@ -11,7 +11,7 @@ export default async function Home() {
   }
 
   return (
-    <main>
+    <main className="p-4">
       <Suspense fallback={<div>Loading...</div>}>
         <ActivityList activities={activities} />
       </Suspense>
